@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册页面</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-image: url('src/static/images/mountain.svg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .register-container {
+            width: 100%;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            padding: 40px 30px;
+            color: white;
+            text-align: center;
+        }
+
+        .header .logo {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
+        }
+
+        .header .logo i {
+            font-size: 40px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.8;
+        }
+
+        .register-form {
+            padding: 30px;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #a0aec0;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background: #f8fafc;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #6366f1;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
+
+        .register-button {
+            width: 100%;
+            height: 56px;
+            background: #6366f1;
+            border: none;
+            border-radius: 16px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .register-button:hover {
+            background: #4f46e5;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.2);
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .login-link a {
+            color: #6366f1;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="register-container">
+        <div class="header">
+            <div class="logo">
+                <img src="src/static/images/penrose-stairs.svg" alt="彭罗斯阶梯" style="width: 40px; height: 40px;">
+            </div>
+            <h1>创建账号</h1>
+            <p>请填写以下信息完成注册</p>
+        </div>
+        <form class="register-form" onsubmit="return handleSubmit(event)">
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" placeholder="请输入账号" required>
+            </div>
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" placeholder="请输入密码" required>
+            </div>
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" placeholder="请确认密码" required>
+                <div class="password-error" style="display: none; color: #e53e3e; font-size: 12px; margin-top: 5px;">两次输入的密码不一致</div>
+            </div>
+            <button type="submit" class="register-button">注 册</button>
+            <div class="login-link">
+                已有账号？<a href="login-design-v2.html">返回登录</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function handleSubmit(event) {
+            event.preventDefault();
+            const button = event.target.querySelector('.register-button');
+            const originalText = button.textContent;
+            
+            // 获取密码输入框的值
+            const passwordInputs = event.target.querySelectorAll('input[type="password"]');
+            const password = passwordInputs[0].value;
+            const confirmPassword = passwordInputs[1].value;
+            
+            // 验证两次密码输入是否一致
+            if (password !== confirmPassword) {
+                alert('两次输入的密码不一致，请重新输入！');
+                // 清空确认密码输入框
+                passwordInputs[1].value = '';
+                passwordInputs[1].focus();
+                return false;
+            }
+            
+            button.textContent = '注册中...';
+            button.style.opacity = '0.8';
+            
+            setTimeout(() => {
+                alert('注册成功！');
+                button.textContent = originalText;
+                button.style.opacity = '1';
+                // 注册成功后返回登录页
+                window.location.href = 'login-design-v2.html';
+            }, 1500);
+        }
+
+        // 输入框焦点效果
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'scale(1.02)';
+            });
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'scale(1)';
+            });
+        });
+        
+        // 添加确认密码实时验证
+        const passwordInputs = document.querySelectorAll('input[type="password"]');
+        const password = passwordInputs[0];
+        const confirmPassword = passwordInputs[1];
+        
+        confirmPassword.addEventListener('input', function() {
+            const errorElement = this.parentElement.querySelector('.password-error');
+            
+            if (this.value && password.value !== this.value) {
+                this.style.borderColor = '#e53e3e';
+                this.style.backgroundColor = 'rgba(229, 62, 62, 0.05)';
+                errorElement.style.display = 'block';
+            } else {
+                this.style.borderColor = this.value ? '#10b981' : '#e2e8f0';
+                this.style.backgroundColor = this.value ? 'rgba(16, 185, 129, 0.05)' : '#f8fafc';
+                errorElement.style.display = 'none';
+            }
+        });
+        
+        // 当第一个密码框内容变化时，如果确认密码框已有内容，也需要验证
+        password.addEventListener('input', function() {
+            if (confirmPassword.value) {
+                const errorElement = confirmPassword.parentElement.querySelector('.password-error');
+                
+                if (this.value !== confirmPassword.value) {
+                    confirmPassword.style.borderColor = '#e53e3e';
+                    confirmPassword.style.backgroundColor = 'rgba(229, 62, 62, 0.05)';
+                    errorElement.style.display = 'block';
+                } else {
+                    confirmPassword.style.borderColor = '#10b981';
+                    confirmPassword.style.backgroundColor = 'rgba(16, 185, 129, 0.05)';
+                    errorElement.style.display = 'none';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

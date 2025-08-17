@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录界面设计</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-image: url('src/static/images/mountain.svg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            display: flex;
+            padding: 20px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            gap: 40px;
+            align-items: center;
+        }
+
+        /* 原型部分 */
+        .prototype {
+            flex: 1;
+            max-width: 375px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            position: sticky;
+            top: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            padding: 40px 30px;
+            color: white;
+            text-align: center;
+        }
+
+        .header .logo {
+            width: 70px;
+            height: 70px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 20px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .header .logo i {
+            font-size: 30px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .login-form {
+            padding: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            font-size: 18px;
+        }
+
+        .input-group input {
+            width: 100%;
+            height: 56px;
+            padding: 0 20px 0 50px;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background: #f8fafc;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #6366f1;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
+
+        .options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 24px 0;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .remember-me input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #6366f1;
+        }
+
+        .forgot-password {
+            color: #6366f1;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        .login-button {
+            width: 100%;
+            height: 56px;
+            background: #6366f1;
+            border: none;
+            border-radius: 16px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .login-button:hover {
+            background: #4f46e5;
+            transform: translateY(-2px);
+        }
+
+        .register-link {
+            text-align: center;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .register-link a {
+            color: #6366f1;
+            text-decoration: none;
+            font-weight: 600;
+            margin-left: 4px;
+        }
+
+        /* 登录页面样式结束 */
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .prototype {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 原型部分 -->
+        <div class="prototype">
+            <div class="header">
+                <div class="logo">
+                    <img src="src/static/images/penrose-stairs.svg" alt="彭罗斯阶梯" style="width: 40px; height: 40px;">
+                </div>
+                <h1>欢迎回来</h1>
+                <p>请登录您的账号以继续</p>
+            </div>
+            <form class="login-form" onsubmit="return handleSubmit(event)">
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="username" placeholder="请输入账号" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" placeholder="请输入密码" required>
+                </div>
+                <div class="options">
+                    <label class="remember-me">
+                        <input type="checkbox">
+                        <span>记住我</span>
+                    </label>
+                    <a href="#" class="forgot-password" onclick="handleForgotPassword(event)">忘记密码？</a>
+                </div>
+                <button type="submit" class="login-button">登 录</button>
+                <div class="register-link">
+                    还没有账号？<a href="#" onclick="handleRegister(event)">立即注册</a>
+                </div>
+            </form>
+        </div>
+
+        <!-- 登录页面结束 -->
+    </div>
+
+    <script>
+        function handleSubmit(event) {
+            event.preventDefault();
+            const button = event.target.querySelector('.login-button');
+            const originalText = button.textContent;
+            button.textContent = '登录中...';
+            button.style.opacity = '0.8';
+            
+            setTimeout(() => {
+                // 获取用户名
+                const username = document.getElementById('username').value;
+                // 保存用户名到localStorage
+                localStorage.setItem('username', username);
+                // 登录成功提示
+                alert('登录成功！');
+                // 恢复按钮状态
+                button.textContent = originalText;
+                button.style.opacity = '1';
+                // 跳转到dashboard页面
+                window.location.href = 'dashboard.html?username=' + encodeURIComponent(username);
+            }, 1500);
+        }
+
+        function handleForgotPassword(event) {
+            event.preventDefault();
+            alert('忘记密码功能开发中...');
+        }
+
+        function handleRegister(event) {
+            event.preventDefault();
+            // 跳转到独立的注册页面
+            window.location.href = 'register.html';
+            // 记录跳转日志
+            console.log('跳转到注册页面');
+        }
+
+        // 输入框焦点效果
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'scale(1.02)';
+            });
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>

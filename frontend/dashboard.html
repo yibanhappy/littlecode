@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人工作台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-image: url('src/static/images/mountain.svg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .header .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .header .logo img {
+            width: 40px;
+            height: 40px;
+            margin-right: 15px;
+        }
+
+        .header .logo h1 {
+            font-size: 24px;
+            color: #4f46e5;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-info .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .user-info .name {
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .logout-btn {
+            margin-left: 15px;
+            padding: 8px 15px;
+            background: #f3f4f6;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            color: #4b5563;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #e5e7eb;
+            color: #1f2937;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            flex: 1;
+        }
+
+        .module {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            min-height: 400px;
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .module-header i {
+            font-size: 24px;
+            margin-right: 15px;
+            color: #6366f1;
+        }
+
+        .module-header h2 {
+            font-size: 20px;
+            color: #1f2937;
+            font-weight: 600;
+        }
+
+        /* 备忘录模块样式 */
+        .memo-list {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 15px;
+        }
+
+        .memo-item {
+            padding: 12px 15px;
+            background: #f9fafb;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border-left: 3px solid #6366f1;
+        }
+
+        .memo-item .memo-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #1f2937;
+        }
+
+        .memo-item .memo-content {
+            font-size: 14px;
+            color: #4b5563;
+        }
+
+        .memo-item .memo-date {
+            font-size: 12px;
+            color: #9ca3af;
+            text-align: right;
+            margin-top: 5px;
+        }
+
+        .memo-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .memo-form input, .memo-form textarea {
+            padding: 10px 15px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .memo-form textarea {
+            resize: none;
+            height: 80px;
+        }
+
+        .memo-form button {
+            padding: 10px;
+            background: #6366f1;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .memo-form button:hover {
+            background: #4f46e5;
+        }
+
+        /* 计时器模块样式 */
+        .timer-display {
+            font-size: 48px;
+            font-weight: 700;
+            text-align: center;
+            margin: 30px 0;
+            color: #1f2937;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .timer-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .timer-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .start-btn {
+            background: #10b981;
+            color: white;
+        }
+
+        .start-btn:hover {
+            background: #059669;
+        }
+
+        .pause-btn {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .pause-btn:hover {
+            background: #d97706;
+        }
+
+        .reset-btn {
+            background: #ef4444;
+            color: white;
+        }
+
+        .reset-btn:hover {
+            background: #dc2626;
+        }
+
+        .timer-mode {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .timer-mode label {
+            margin: 0 10px;
+            cursor: pointer;
+            color: #4b5563;
+        }
+
+        .timer-mode input[type="radio"] {
+            margin-right: 5px;
+        }
+
+        .countdown-input {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .countdown-input input {
+            width: 80px;
+            padding: 8px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            text-align: center;
+            margin: 0 5px;
+        }
+
+        /* 每日运势模块样式 */
+        .fortune {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+        }
+
+        .fortune-card {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 300px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .fortune-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            opacity: 0.5;
+        }
+
+        .fortune-date {
+            font-size: 14px;
+            margin-bottom: 15px;
+            opacity: 0.8;
+        }
+
+        .fortune-icon {
+            font-size: 40px;
+            margin-bottom: 20px;
+        }
+
+        .fortune-text {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .fortune-lucky-number {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .draw-fortune-btn {
+            margin-top: 30px;
+            padding: 12px 25px;
+            background: #6366f1;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(99, 102, 241, 0.2);
+        }
+
+        .draw-fortune-btn:hover {
+            background: #4f46e5;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(99, 102, 241, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .header .logo {
+                margin-bottom: 15px;
+                justify-content: center;
+            }
+
+            .user-info {
+                flex-direction: column;
+            }
+
+            .user-info .avatar {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+
+            .logout-btn {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <img src="src/static/images/penrose-stairs.svg" alt="彭罗斯阶梯">
+            <h1>个人工作台</h1>
+        </div>
+        <div class="user-info">
+            <div class="avatar">U</div>
+            <span class="name">用户名</span>
+            <button class="logout-btn" onclick="logout()">退出登录</button>
+        </div>
+    </div>
+
+    <div class="dashboard">
+        <!-- 备忘录模块 -->
+        <div class="module">
+            <div class="module-header">
+                <i class="fas fa-sticky-note"></i>
+                <h2>备忘录</h2>
+            </div>
+            <div class="memo-list" id="memoList">
+                <!-- 备忘录列表将通过JavaScript动态生成 -->
+            </div>
+            <form class="memo-form" id="memoForm">
+                <input type="text" placeholder="标题" id="memoTitle" required>
+                <textarea placeholder="内容" id="memoContent" required></textarea>
+                <button type="submit">添加备忘录</button>
+            </form>
+        </div>
+
+        <!-- 计时器模块 -->
+        <div class="module">
+            <div class="module-header">
+                <i class="fas fa-clock"></i>
+                <h2>计时器</h2>
+            </div>
+            <div class="timer-display" id="timerDisplay">00:00:00</div>
+            <div class="timer-controls">
+                <button class="timer-btn start-btn" id="startBtn">开始</button>
+                <button class="timer-btn pause-btn" id="pauseBtn" disabled>暂停</button>
+                <button class="timer-btn reset-btn" id="resetBtn">重置</button>
+            </div>
+            <div class="timer-mode">
+                <label>
+                    <input type="radio" name="timerMode" value="stopwatch" checked> 正计时
+                </label>
+                <label>
+                    <input type="radio" name="timerMode" value="countdown"> 倒计时
+                </label>
+            </div>
+            <div class="countdown-input" id="countdownInputs" style="display: none;">
+                <input type="number" id="hoursInput" min="0" max="23" placeholder="时" value="0">
+                <input type="number" id="minutesInput" min="0" max="59" placeholder="分" value="0">
+                <input type="number" id="secondsInput" min="0" max="59" placeholder="秒" value="0">
+            </div>
+        </div>
+
+        <!-- 每日运势模块 -->
+        <div class="module">
+            <div class="module-header">
+                <i class="fas fa-star"></i>
+                <h2>每日运势</h2>
+            </div>
+            <div class="fortune">
+                <div class="fortune-card" id="fortuneCard">
+                    <div class="fortune-date" id="fortuneDate"></div>
+                    <div class="fortune-icon"><i class="fas fa-question-circle"></i></div>
+                    <div class="fortune-text">点击下方按钮抽取今日运势</div>
+                    <div class="fortune-lucky-number"></div>
+                </div>
+                <button class="draw-fortune-btn" id="drawFortuneBtn">抽取运势</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 用户信息处理
+        document.addEventListener('DOMContentLoaded', function() {
+            // 从URL参数或localStorage获取用户名
+            const urlParams = new URLSearchParams(window.location.search);
+            const username = urlParams.get('username') || localStorage.getItem('username') || '用户';
+            
+            // 更新用户名显示
+            document.querySelector('.user-info .name').textContent = username;
+            document.querySelector('.user-info .avatar').textContent = username.charAt(0).toUpperCase();
+            
+            // 存储用户名到localStorage
+            localStorage.setItem('username', username);
+        });
+        
+        // 退出登录功能
+        function logout() {
+            localStorage.removeItem('username');
+            window.location.href = 'login-design-v2.html';
+        }
+        
+        // 备忘录功能
+        const memoForm = document.getElementById('memoForm');
+        const memoList = document.getElementById('memoList');
+        const memoTitleInput = document.getElementById('memoTitle');
+        const memoContentInput = document.getElementById('memoContent');
+        
+        // 从localStorage加载备忘录
+        let memos = JSON.parse(localStorage.getItem('memos')) || [];
+        
+        // 渲染备忘录列表
+        function renderMemos() {
+            memoList.innerHTML = '';
+            
+            if (memos.length === 0) {
+                memoList.innerHTML = '<div class="memo-item"><div class="memo-content">暂无备忘录，请添加新的备忘录。</div></div>';
+                return;
+            }
+            
+            memos.forEach((memo, index) => {
+                const memoItem = document.createElement('div');
+                memoItem.className = 'memo-item';
+                memoItem.innerHTML = `
+                    <div class="memo-title">${memo.title}</div>
+                    <div class="memo-content">${memo.content}</div>
+                    <div class="memo-date">${memo.date}</div>
+                    <button class="delete-btn" style="background: none; border: none; color: #ef4444; cursor: pointer; float: right; margin-top: -20px;" onclick="deleteMemo(${index})"><i class="fas fa-trash"></i></button>
+                `;
+                memoList.appendChild(memoItem);
+            });
+        }
+        
+        // 添加新备忘录
+        memoForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const title = memoTitleInput.value.trim();
+            const content = memoContentInput.value.trim();
+            
+            if (!title || !content) return;
+            
+            const now = new Date();
+            const dateStr = `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')} ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+            
+            memos.unshift({
+                title,
+                content,
+                date: dateStr
+            });
+            
+            // 保存到localStorage
+            localStorage.setItem('memos', JSON.stringify(memos));
+            
+            // 重新渲染列表
+            renderMemos();
+            
+            // 清空表单
+            memoTitleInput.value = '';
+            memoContentInput.value = '';
+        });
+        
+        // 删除备忘录
+        function deleteMemo(index) {
+            if (confirm('确定要删除这条备忘录吗？')) {
+                memos.splice(index, 1);
+                localStorage.setItem('memos', JSON.stringify(memos));
+                renderMemos();
+            }
+        }
+        
+        // 计时器功能
+        const timerDisplay = document.getElementById('timerDisplay');
+        const startBtn = document.getElementById('startBtn');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const timerModeInputs = document.querySelectorAll('input[name="timerMode"]');
+        const countdownInputs = document.getElementById('countdownInputs');
+        const hoursInput = document.getElementById('hoursInput');
+        const minutesInput = document.getElementById('minutesInput');
+        const secondsInput = document.getElementById('secondsInput');
+        
+        let timerInterval;
+        let timerMode = 'stopwatch';
+        let seconds = 0;
+        let isRunning = false;
+        
+        // 更新计时器显示
+        function updateTimerDisplay(totalSeconds) {
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const secs = totalSeconds % 60;
+            
+            timerDisplay.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        // 开始计时器
+        startBtn.addEventListener('click', function() {
+            if (isRunning) return;
+            
+            if (timerMode === 'countdown') {
+                // 获取倒计时输入值
+                const hours = parseInt(hoursInput.value) || 0;
+                const minutes = parseInt(minutesInput.value) || 0;
+                const secs = parseInt(secondsInput.value) || 0;
+                
+                seconds = hours * 3600 + minutes * 60 + secs;
+                
+                if (seconds <= 0) {
+                    alert('请设置倒计时时间！');
+                    return;
+                }
+                
+                updateTimerDisplay(seconds);
+            }
+            
+            isRunning = true;
+            startBtn.disabled = true;
+            pauseBtn.disabled = false;
+            
+            timerInterval = setInterval(function() {
+                if (timerMode === 'stopwatch') {
+                    seconds++;
+                } else {
+                    seconds--;
+                    if (seconds <= 0) {
+                        clearInterval(timerInterval);
+                        isRunning = false;
+                        startBtn.disabled = false;
+                        pauseBtn.disabled = true;
+                        seconds = 0;
+                        alert('倒计时结束！');
+                    }
+                }
+                
+                updateTimerDisplay(seconds);
+            }, 1000);
+        });
+        
+        // 暂停计时器
+        pauseBtn.addEventListener('click', function() {
+            clearInterval(timerInterval);
+            isRunning = false;
+            startBtn.disabled = false;
+            pauseBtn.disabled = true;
+        });
+        
+        // 重置计时器
+        resetBtn.addEventListener('click', function() {
+            clearInterval(timerInterval);
+            isRunning = false;
+            seconds = 0;
+            updateTimerDisplay(seconds);
+            startBtn.disabled = false;
+            pauseBtn.disabled = true;
+        });
+        
+        // 切换计时器模式
+        timerModeInputs.forEach(input => {
+            input.addEventListener('change', function() {
+                timerMode = this.value;
+                
+                if (timerMode === 'countdown') {
+                    countdownInputs.style.display = 'flex';
+                } else {
+                    countdownInputs.style.display = 'none';
+                }
+                
+                // 重置计时器
+                clearInterval(timerInterval);
+                isRunning = false;
+                seconds = 0;
+                updateTimerDisplay(seconds);
+                startBtn.disabled = false;
+                pauseBtn.disabled = true;
+            });
+        });
+        
+        // 每日运势功能
+        const fortuneCard = document.getElementById('fortuneCard');
+        const fortuneDate = document.getElementById('fortuneDate');
+        const drawFortuneBtn = document.getElementById('drawFortuneBtn');
+        
+        // 运势数据
+        const fortunes = [
+            { text: "今天的你充满活力，将遇到意想不到的好事。", icon: "fa-sun", color: "#f59e0b" },
+            { text: "工作中可能遇到一些挑战，但坚持下去，终将成功。", icon: "fa-mountain", color: "#10b981" },
+            { text: "今天适合与朋友相聚，分享快乐时光。", icon: "fa-users", color: "#3b82f6" },
+            { text: "财运不错，可能有意外收获。", icon: "fa-coins", color: "#f59e0b" },
+            { text: "今天的你思维敏捷，是解决问题的好时机。", icon: "fa-lightbulb", color: "#6366f1" },
+            { text: "健康状况良好，但也要注意休息。", icon: "fa-heart", color: "#ef4444" },
+            { text: "可能会收到一个好消息，让你心情愉悦。", icon: "fa-envelope", color: "#8b5cf6" },
+            { text: "今天适合学习新知识，拓展视野。", icon: "fa-book", color: "#1d4ed8" },
+            { text: "人际关系和谐，沟通顺畅。", icon: "fa-comments", color: "#10b981" },
+            { text: "今天可能有些小波折，但不会影响整体运势。", icon: "fa-wave-square", color: "#6b7280" },
+            { text: "创意灵感涌现，是开展创造性工作的好时机。", icon: "fa-palette", color: "#8b5cf6" },
+            { text: "今天的你魅力四射，容易获得他人的好感。", icon: "fa-star", color: "#f59e0b" }
+        ];
+        
+        // 更新日期显示
+        function updateFortuneDate() {
+            const now = new Date();
+            const dateStr = `${now.getFullYear()}年${(now.getMonth() + 1)}月${now.getDate()}日`;
+            fortuneDate.textContent = dateStr;
+        }
+        
+        // 抽取运势
+        drawFortuneBtn.addEventListener('click', function() {
+            // 检查今天是否已经抽取过运势
+            const today = new Date().toDateString();
+            const lastDrawDate = localStorage.getItem('fortuneDate');
+            const lastFortune = localStorage.getItem('lastFortune');
+            
+            if (lastDrawDate === today && lastFortune) {
+                // 今天已经抽取过运势，显示上次的结果
+                const fortune = JSON.parse(lastFortune);
+                displayFortune(fortune);
+                alert('今天已经抽取过运势了，明天再来吧！');
+                return;
+            }
+            
+            // 随机抽取一个运势
+            const randomIndex = Math.floor(Math.random() * fortunes.length);
+            const fortune = fortunes[randomIndex];
+            
+            // 生成幸运数字
+            const luckyNumber = Math.floor(Math.random() * 100);
+            fortune.luckyNumber = luckyNumber;
+            
+            // 保存今天的运势
+            localStorage.setItem('fortuneDate', today);
+            localStorage.setItem('lastFortune', JSON.stringify(fortune));
+            
+            // 显示运势
+            displayFortune(fortune);
+        });
+        
+        // 显示运势
+        function displayFortune(fortune) {
+            fortuneCard.innerHTML = `
+                <div class="fortune-date">${fortuneDate.textContent}</div>
+                <div class="fortune-icon"><i class="fas ${fortune.icon}"></i></div>
+                <div class="fortune-text">${fortune.text}</div>
+                <div class="fortune-lucky-number">今日幸运数字: ${fortune.luckyNumber}</div>
+            `;
+            
+            fortuneCard.style.background = `linear-gradient(135deg, ${fortune.color}, #8b5cf6)`;
+        }
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 渲染备忘录列表
+            renderMemos();
+            
+            // 更新运势日期
+            updateFortuneDate();
+            
+            // 检查是否已经抽取过今日运势
+            const today = new Date().toDateString();
+            const lastDrawDate = localStorage.getItem('fortuneDate');
+            const lastFortune = localStorage.getItem('lastFortune');
+            
+            if (lastDrawDate === today && lastFortune) {
+                // 显示今日已抽取的运势
+                displayFortune(JSON.parse(lastFortune));
+            }
+        });
+    </script>
+</body>
+</html>

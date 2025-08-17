@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1024" height="576" viewBox="0 0 1024 576">
+  <defs>
+    <linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#a8d0e6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f8f9fa;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="mountain1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#6c5b7b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#355c7d;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="mountain2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#c06c84;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#6c5b7b;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="snow" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f8f9fa;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="clouds" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#f8f9fa;stop-opacity:0.8" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Sky background -->
+  <rect width="1024" height="576" fill="url(#sky)" />
+  
+  <!-- Distant mountains -->
+  <path d="M0,350 L100,280 L200,320 L300,250 L400,300 L500,220 L600,280 L700,240 L800,300 L900,260 L1024,320 L1024,576 L0,576 Z" fill="url(#mountain1)" />
+  
+  <!-- Middle mountains with snow caps -->
+  <path d="M0,400 L100,320 L200,380 L300,300 L400,360 L500,280 L600,350 L700,300 L800,370 L900,320 L1024,380 L1024,576 L0,576 Z" fill="url(#mountain2)" />
+  
+  <!-- Snow caps -->
+  <path d="M300,300 L320,290 L340,305 L360,295 L380,310 L400,360 L380,350 L360,340 L340,345 L320,335 L300,300 Z" fill="url(#snow)" />
+  <path d="M500,280 L520,270 L540,285 L560,275 L580,290 L600,350 L580,340 L560,330 L540,335 L520,325 L500,280 Z" fill="url(#snow)" />
+  <path d="M700,300 L720,290 L740,305 L760,295 L780,310 L800,370 L780,360 L760,350 L740,355 L720,345 L700,300 Z" fill="url(#snow)" />
+  
+  <!-- Clouds -->
+  <ellipse cx="200" cy="150" rx="60" ry="30" fill="url(#clouds)" opacity="0.7" />
+  <ellipse cx="500" cy="100" rx="80" ry="40" fill="url(#clouds)" opacity="0.8" />
+  <ellipse cx="800" cy="180" rx="70" ry="35" fill="url(#clouds)" opacity="0.6" />
+</svg>
